@@ -8,3 +8,6 @@ Golang学习中遇到比较好的网站汇总:
   
 
 《Go语言标准库》(查阅非常方便):https://books.studygolang.com/The-Golang-Standard-Library-by-Example/  
+
+Golang入门教程:  https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/preface.md  
+
