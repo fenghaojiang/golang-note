@@ -26,8 +26,11 @@ URN全称Uniform Resource Name 统一资源名称
 
 **HTTP方法**  
 请求方法字段  
-+ GET
-+ HEAD
++ GET  
+请求指定的页面信息，并返回实体主体
++ HEAD  
+与GET请求类似，但不返回报文实体主体部分。  
+主要用于确认URL的有效性以及资源的更新的日期时间。
 + POST
 + PUT
 + DELETE
