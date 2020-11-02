@@ -11,7 +11,7 @@ URI包含URL跟URN
 URI全称Uniform Resource Identifier 统一资源标识符  
 URL全称Uniform Resource Locator 统一资源定位符  
 URN全称Uniform Resource Name 统一资源名称  
-看这中文名就知道URI包含URL跟URN，懂的都懂，真的是给他懂完了。  
+看这中文名跟英文名就知道URI包含URL跟URN，懂的都懂，真的是给他懂完了。  
 
 
 **请求报文和响应报文**  
