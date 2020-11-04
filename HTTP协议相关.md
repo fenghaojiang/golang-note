@@ -14,6 +14,12 @@ URN全称Uniform Resource Name 统一资源名称
 看这中文名跟英文名就知道URI包含URL跟URN，懂的都懂，真的是给他懂完了。  
 
 
+## HTTP URL  
+格式：```http://host[:port][abs_path]```  
+host: 合法的Internet主机域名或者IP地址  
+port: 指定的一个端口号，拥有被请求资源的服务器主机监听该端口的TCP连接  
+abs_path指定请求资源的URI,如果URL中没有给出abs_path，那么当它作为请求URI时，必须以"/"的形式给出。通常这个工作浏览器已经完成
+
 ## 请求报文和响应报文  
 请求报文的第一行是请求行，包含了方法字段。  
 + 请求报文 
