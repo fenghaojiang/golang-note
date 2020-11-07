@@ -184,3 +184,16 @@ Session可以存储在服务器上的文件、数据库、或者内存中。也�
 
 + 程序绑定的URL如果不是以/结尾，那么它只会与完全相同的URL匹配；
 + 但如果绑定的URL以/结尾，即使URL只有前缀部分与被绑定的URL相同，ServerMux也会认为两个URL匹配，比如绑定/hello/，浏览器请求/hello/there的时候，服务器在找不到与之完全匹配的处理器时，就会退而求其次，找到与/hello/匹配的处理器。
+
+
+## Request字段的对比  
+**对比Form、PostForm和MultipartForm**  
+
+|字段|需要调用的方法或需要访问的字段|键值对的来源|内容类型|
+|:---:|:---:|:---:|:---:|:---:|
+|||URL/表单|URL编码/Multipart编码|
+|Form|ParseForm|√/√|√/-|
+|PostForm|Form|-|√|√/-|
+|MultipartForm|ParseMultipartForm|-/√|-/√|
+|FormValue|无|√/√|√/-
+|PostFormValue|无|-/√|√/-|
