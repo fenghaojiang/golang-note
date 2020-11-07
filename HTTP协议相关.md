@@ -158,11 +158,11 @@ Cookie的设计本意是要客服HTTP的无状态性，虽然cookie并不是完�
 
 ```go
 type Cookie struct {
-    Name    string
-    Value   string
-    Path    string
-    Domain  string
-    Expires time.Time
+    Name       string
+    Value      string
+    Path       string
+    Domain     string
+    Expires    time.Time
     RawExpires string
     MaxAge     int
     Secure     bool
@@ -171,6 +171,15 @@ type Cookie struct {
     Unparsed   []string
 }
 ```
+<br>
+没有设置Expires字段的cookie通常称为会话cookie或者临时cookie，这种cookie在浏览器关闭就会被移除。  
+相对而言，设置了Expires字段的cookie通常称为持久cookie，这种cookie会一直存在，直到指定的过期时间或者被手动删除为止。  
+Expires字段用于明确地指定cookie应该在什么时候过期，而MaxAge字段则指明了cookie在被浏览器创建出来能存活多少秒。  
+之所以会出现两种方式完全是因为不同浏览器使用了各不相同的cookie机制，跟Go语言本身的设计没有关系。  
+<br>
+HTTP1.1中废弃了Expires，推荐使用MaxAge，但是几乎所有的浏览器都支持Expires。微软的IE6、IE7、IE8都不支持MaxAge  
+为了让cookie在所有浏览器上都能正常运行，一个实际的方法是只使用Expires，或者同时使用MaxAge跟Expires  
+
 
 
 **Cookie主要用途**  
