@@ -154,6 +154,24 @@ Cookie是服务器发送到用户浏览器并保存在本地的一小块数据�
 Cookie曾一度用于客户端数据的存储，因为当时并没有其他合适存储方式，现在各种现代的浏览器开始支持其他的存储方式，Cookie逐渐被淘汰，新的浏览器API已经允许开发者直接将数据存储到本地，如使用Web storage API或indexedDB  
 Cookie的设计本意是要客服HTTP的无状态性，虽然cookie并不是完成这一目的的唯一方法。  
 
+## Cookie在go语言中的结构  
+
+```go
+type Cookie struct {
+    Name    string
+    Value   string
+    Path    string
+    Domain  string
+    Expires time.Time
+    RawExpires string
+    MaxAge     int
+    Secure     bool
+    HttpOnly   bool
+    Raw        string
+    Unparsed   []string
+}
+```
+
 
 **Cookie主要用途**  
 * 会话状态管理（登陆状态、购物车、游戏分数或者其他需要记录的信息）
