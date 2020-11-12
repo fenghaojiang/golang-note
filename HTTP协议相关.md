@@ -224,7 +224,7 @@ Session可以存储在服务器上的文件、数据库、或者内存中。也�
 |Form|ParseForm|√/√|√/-|
 |PostForm|Form|-|√|√/-|
 |MultipartForm|ParseMultipartForm|-/√|-/√|
-|FormValue|无|√/√|√/-
+|FormValue|无|√/√|√/-|
 |PostFormValue|无|-/√|√/-|
 
 <br>
