@@ -11,3 +11,4 @@ Golang学习中遇到比较好的网站汇总:
 
 Golang入门教程:  https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/preface.md  
 
+Golang 企业级入门基础知识 https://draveness.me/golang/
