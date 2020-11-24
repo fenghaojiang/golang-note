@@ -1,39 +1,16 @@
 ---
-title: gRPC笔记
-date: 2020-11-21
+title: GRPC
+date: 2020-11-2
 ---
 
+# What's an API?  
+<br> 
+At its core, an API is a contract, saying:  
 
-# Server-side streaming RPC : 服务流式RPC  
-![grpc](grpc.png)
++ Send me this REQUEST (Client)  
++ I'll send you this RESPONSE (Server)  
+  
+  It's all about the data  
+  The rest, we'll leave to the gRPC framework.  
 
-
-## Server  
-```go
-func (s *StreamService) List(r *pb.StreamRequest, stream pb.StreamService_ListServer) error {
-    for(n := 0; n <= 6; n++) {
-        Pt: &pb.StreamPoint{
-            ...
-        }
-    }
-    return nil
-}
-```
-
-Client
-
-
-```go
-func printList(client pb.StreamServiceClient, r *pb.StreamRequest) error {
-    stream, err := client.List(context.Background(), r)
-    ...
-
-    for {
-        resp, err := stream.Recv()
-        if err == io.EOF {
-            break
-        }
-    }
-    return nil
-}
-```
+  
