@@ -205,3 +205,13 @@ func (v Value) Call(in []Value) []Value {
 	return v.call("Call", in)
 }
 ```
+
+reflect.Value.Call方法是运行时调用方法的入口，它通过两个MustBe开头的方法确定了当前反射对象的类型是函数以及可见性，随后调用reflect.Value.call完成方法调用，这个私有方法的执行过程会分为以下的几个部分：
+1. 检查输入参数以及类型的合法性；
+2. 将传入的reflect.Value参数数组设置到栈上
+3. 通过函数指针和输入参数调用函数
+4. 从栈上获取函数的返回值  
+
+我们将按照上面的顺序分析使用reflect进行函数调用的几个过程  
+
+
