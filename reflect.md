@@ -178,3 +178,20 @@ func main() {
 	fmt.Println(result[0].Int)
 }
 ```
+
+
+1. 通过reflect.ValueOf获取函数Add对应的反射对象  
+2. 根据反射对象reflect.rtype.NumIn方法返回的参数个数创建argv数组
+3. 多次调用reflect.ValueOf函数逐一设置argv数组中的各个参数
+4. 调用反射对象Add的reflect.Value.Call方法并传入参数列表
+5. 获取返回值数组、验证数组长度以及类型并打印其中的数据
+---
+
+
+reflect.Value.Call 方法是运行时调用方法的入口，它通过两个 MustBe 开头的方法确定了当前反射对象的类型是函数以及可见性，随后调用 reflect.Value.call 完成方法调用，这个私有方法的执行过程会分成以下的几个部分：  
+
+1. 检查输入参数以及类型的合法性；
+2. 将传入的 reflect.Value 参数数组设置到栈上；
+3. 通过函数指针和输入参数调用函数；
+4. 从栈上获取函数的返回值；
+
