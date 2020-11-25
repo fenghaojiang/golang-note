@@ -195,3 +195,13 @@ reflect.Value.Call 方法是运行时调用方法的入口，它通过两个 Mus
 3. 通过函数指针和输入参数调用函数；
 4. 从栈上获取函数的返回值；
 
+
+使用反射来调用方法非常复杂，原本只需要一行代码就能完成的工作，现在需要十几行代码才能完成，但这也是在静态语言中使用动态特性需要付出的成本  
+
+```go
+func (v Value) Call(in []Value) []Value {
+	v.mustBe(Func)
+	v.mustBeExported()
+	return v.call("Call", in)
+}
+```
