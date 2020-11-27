@@ -3,6 +3,8 @@ title: MongoDB浅入浅出
 date: 2020-11-26
 ---
 
+文章摘自： https://draveness.me/mongodb-wiredtiger/
+
 
 # MongoDB
 
@@ -31,5 +33,22 @@ MongoDB使用面向文档的数据模型，导致很多概念都与RDBMS有一�
 
 传统的RDBMS其实使用Table的格式将数据逻辑地存储在一张二维的表中，其中不包括任何复杂的数据结构，但是由于MongoDB支持嵌入文档、数组和哈希等多种复杂数据结构的使用，所以它最终将所有的数据以BSON的数据格式存储起来。  
 
+RDBMS和MongoDB中的概念都有着相互对应的关系，数据库、表、行和索引的概念在两种数据库中都非常相似，唯独最后的JOIN和Embedded Document或者Reference有着巨大的差别。这一点差别其实也影响了在使用MongoDB时对集合(Collection) Schema的设计，如果我们在MongoDB中遵循了与RDBMS中相同的思想对Collection进行设计，那么就不可避免的使用很多“JOIN”语句，而MongoDB是不支持"JOIN"的，在应用内做这种查询的性能非常非常差，在这时使用嵌入式的文档其实就可以解决这种问题了，嵌入式的文档虽然可能会造成很多的数据冗余导致我们在更新时会很痛苦，但是查询时确实非常迅速  
 
-RDBMS和MongoDB中的概念都有着相互对应的关系，数据库、表、行和索引的概念在两种数据库中都非常相似，唯独最后的JOIN和Embedded Document或者Reference有着巨大的差别。这一点差别其实也影响了在使用MongoDB时对集合(Collection) Schema的设计，如果我们在MongoDB中遵循了与RDBMS中相同的思想对Collection进行设计，那么就不可避免的使用很多“JOIN”语句，而MongoDB
+
+在MongoDB的使用时，我们一定要忘记很多RDBMS中对于表设计的规则，同时想清楚MongoDB的优势，仔细思考如何对表进行设计才能利用MongoDB提供的诸多特性提升查询的效率  
+
+
+
+## 数据模型  
+MongoDB与RDBMS之间最大的不同，就是数据模型设计之间有着非常明显的差异，数据模型的不同决定了它有着非常不同的特性，存储在MongoDB中的数据中有着非常灵活的Schema，我们不需要像RDBMS一样，在插入数据前就决定并且定义表中的数据结构，MongoDB的结合不对Collection的数据结构进行任何限制，但是在实际使用中，同一个Collection中的大多数文档都有着类似的结构。  
+
+![mongo](mongo3.jpg-1000width)  
+
+在为MongoDB应用设计数据模型时，如何表示数据模型之间的关系其实是需要开发者
+
+
+
+
+
+
