@@ -84,5 +84,23 @@ cannot use &a (type *int) as type *float64 in assignment
 
 unsafe包用于Go编译器，在编译阶段使用。从名字就可以看出，它是不安全的，官方并不建议使用。  
 
+那么为什么要用unsafe包呢，因为它可以绕过Go语言的类型系统，直接操作内存。例如：一般我们不能操作一个结构体的未导出成员，但是通过unsafe包就能做到。unsafe包让我可以直接读写内存。
+
+## 为什么有unsafe  
+
+Go语言类型系统是为了安全和效率设计的，有时，安全会导致效率底下。有了unsafe包，高阶的程序员就可以利用它绕过类型系统的低效。因此，它就有了存在的意义，阅读Go源码，会发现有大量使用unsafe包的例子  
+
+
+### unsafe实现原理  
+
+源码:  
+```go
+type ArbitraryType int 
+type Point *ArbitraryType
+```
+
+这里普及一个生活小常识，Arbitrary是任意的意思，也就是说Pointer可以指向任意类型，实际上它类似于C语言的void*   
+
+
 
 
