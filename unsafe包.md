@@ -102,5 +102,22 @@ type Point *ArbitraryType
 这里普及一个生活小常识，Arbitrary是任意的意思，也就是说Pointer可以指向任意类型，实际上它类似于C语言的void*   
 
 
+```go
+func Sizeof(x ArbitraryType) uintptr
+func Offsetof(x ArbitraryType) uintptr
+func Alignof(x ArbitraryType) uintptr
+```
+
+Sizeof返回类型x所占据的字节数，但不包含x所指向的内容大小。例如，对一个指针，函数返回的大小为8字节(64位机上)，一个slice的大小则为slice header的大小   
+
+
+Offsetof返回结构体成员在内存中的位置离结构体起始处的字节数，所传参数必须是结构体的成员   
+
+Alignof返回m，m是指当类型进行内存对齐时，它分配到的内存地址能整除m  
+
+
+
+
+
 
 
