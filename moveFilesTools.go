@@ -44,7 +44,7 @@ func modify(s string) string { //add string "./img/" after "![]("
 	result := ""
 	article := strings.SplitAfter(s, subs)
 	for i, v := range article {
-		if i%2 == 0 { //start from zero
+		if i == 0 {
 			result += v
 		} else {
 			result = (result + "./img/") + v
