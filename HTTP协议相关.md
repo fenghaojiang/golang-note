@@ -40,11 +40,11 @@ scheme:opaque[?query][#fragment]
 请求报文的第一行是请求行，包含了方法字段。  
 + 请求报文 
 
-![request](request.png)  
+![request](./img/request.png)  
 
 + 响应报文
 
-![response](response.png)  
+![response](./img/response.png)  
 
 ## HTTP方法简单介绍  
 请求方法字段  
@@ -68,7 +68,7 @@ POST主要用来传输数据，而GET主要用来获取资源。
 + CONNECT  
 HTTP/1.1 协议中预留给能够将连接改为管道方式的代理服务器。要求与代理服务器通信时建立隧道。  
 使用SSL（Secure Socket Layer，安全套接层）和TLS（Transport Layer Security，传输层安全）协议把通信内容加密后经网络隧道传输。  
-![connect](connect.jpg)  
+![connect](./img/connect.jpg)  
 CONNECT www.example.com:443 HTTP/1.1  
 看图解有点像webRtc?  
 

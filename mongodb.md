@@ -15,7 +15,7 @@ MongoDB虽然也是数据库，但是与传统的RDBMS相比有着巨大的不�
 
 ## 架构  
 现有流行的数据库其实都有着非常相似的架构，MongoDB其实就与MySQL中的架构差不多，底层都使用了『可插拔』的存储引擎以满足用户的不同需求。  
-![mongo](mongodb1.jpg-1000width)  
+![mongo](./img/mongodb1.jpg-1000width)  
 
 用户可以根据表中的数据特征选择不同的存储引擎，他们可以在同一个MongoDB的实例中使用；在最新版本的MongoDB中使用了WiredTiger作为默认的存储引擎，WiredTiger提供了不同粒度的并发控制和压缩机制，能够为不同种类的应用提供了最好的性能和存储效率  
 
@@ -28,7 +28,7 @@ MongoDB虽然也是数据库，但是与传统的RDBMS相比有着巨大的不�
 ## RDBMS与MongoDB  
 MongoDB使用面向文档的数据模型，导致很多概念都与RDBMS有一些差别，虽然从总体上来看两者都有对应的概念，不过概念之间的细微的差别也会影响我们对MongoDB的理解  
 
-![mongo2](mongo2.jpg-1000width)  
+![mongo2](./img/mongo2.jpg-1000width)  
 
 
 传统的RDBMS其实使用Table的格式将数据逻辑地存储在一张二维的表中，其中不包括任何复杂的数据结构，但是由于MongoDB支持嵌入文档、数组和哈希等多种复杂数据结构的使用，所以它最终将所有的数据以BSON的数据格式存储起来。  
@@ -43,7 +43,7 @@ RDBMS和MongoDB中的概念都有着相互对应的关系，数据库、表、�
 ## 数据模型  
 MongoDB与RDBMS之间最大的不同，就是数据模型设计之间有着非常明显的差异，数据模型的不同决定了它有着非常不同的特性，存储在MongoDB中的数据中有着非常灵活的Schema，我们不需要像RDBMS一样，在插入数据前就决定并且定义表中的数据结构，MongoDB的结合不对Collection的数据结构进行任何限制，但是在实际使用中，同一个Collection中的大多数文档都有着类似的结构。  
 
-![mongo](mongo3.jpg-1000width)  
+![mongo](./img/mongo3.jpg-1000width)  
 
 在为MongoDB应用设计数据模型时，如何表示数据模型之间的关系其实是需要开发者仔细思考的，MongoDB为表示文档之间的关系提供了两种不同的方式：引用和嵌入。  
 
@@ -51,7 +51,7 @@ MongoDB与RDBMS之间最大的不同，就是数据模型设计之间有着非�
 ## 标准化数据模型  
 
 引用(Reference)在MongoDB中被称为标准化的数据模型，它与MySQL的外键非常相似，每一个文档都可以通过一个xx_id的字段『链接』到其他的文档:  
-![mongo4](mongo4.jpg-1000width)  
+![mongo4](./img/mongo4.jpg-1000width)  
 
 
 但是MongoDB中的这种引用不想MySQL中可以直接通过JOIN进行查找，我们需要使用额外的的查询找到该引用对应的模型，这虽然提供了更多的灵活性，不过由于增加了客户端和MongoDB之间的交互次数(Round-Trip)也会导致查询变慢，甚至非常严重的性能问题。  
@@ -59,7 +59,7 @@ MongoDB与RDBMS之间最大的不同，就是数据模型设计之间有着非�
 
 MongoDB中的引用并不会对引用对应的数据模型是否真正存在做出任何的约束，所以如果在应用层级没有对文档之间的关系有所约束，那么就可能会出现引用了只想不存在的文档的问题：
 
-![mongo5](mongo5.jpg-1000width)  
+![mongo5](./img/mongo5.jpg-1000width)  
 
 虽然引用有着比较严重的性能问题并且在数据库层面没有对模型是否被删除加上限制，不过它提供的一些特点是嵌入式的文档无法给予了，当我们需要表示多对多关系或者更加庞大的数据集是，就可以考虑使用标准话的数据模型——引用了。
 
@@ -69,7 +69,7 @@ MongoDB中的引用并不会对引用对应的数据模型是否真正存在做�
 
 除了与MySQL中非常相似的引用，MongoDB由于其独特的数据存储方式，还提供了嵌入式的数据模型，嵌入式的数据模型也被认为是不标准的数据模型：
 
-![mongo6](mongo6.jpg-1000width)  
+![mongo6](./img/mongo6.jpg-1000width)  
 
 因为MongoDB使用BSON的数据格式进行存储，而嵌入式数据模型中的子文档其实就是父文档中的另一个值，只是其中存储的是一个对象  
 
@@ -87,14 +87,14 @@ MongoDB 底层的 WiredTiger 存储引擎能够保证对于同一个文档的操
 
 MongoDB中索引的概念其实与MySQL中的索引相差不多，无论是底层的数据结构还是基本的索引类型都几乎完全相同，两种的区别就在于因为MongoDB支持了不同类型的数据结构，所以也理所当然地提供了更多索引种类。  
 
-![indices](indices.jpg-1000width)  
+![indices](./img/indices.jpg-1000width)  
 
 
 ## 默认索引  
 MySQL中的每一个数据行都具有一个主键，数据库中的数据都是按照以主键作为键物理地存储在文件中的，除了用于数据的存储，主键由于其特性也能够加速数据库的查询语句。  
 
 而MongoDB中所有的文档也都有一个唯一的_id字段，在默认情况下所有的文档都使用一个长12字节的ObjectId作为默认索引：  
-![objId](objectId.jpg-1000width)  
+![objId](./img/objectId.jpg-1000width)  
 
 前四位代表当前_id生成时的Unix时间戳，在这之后是三位的机器标识符和两位的处理器标识符，最后是一个三位的计数器，初始值就是一个随机数；通过这种方式代替递增的id能够解决分布式的MongoDB生成唯一标识符的问题，同时可以在一定程度上保证id的增长是递增的  
 
@@ -109,7 +109,7 @@ db.users.createIndex( {age: -1} )
 
 MySQL8.0 之前的索引都只能是正序排列的，在 8.0 之后才引入了逆序的索引，单一字段索引可以说是 MySQL 中的辅助（Secondary）索引的一个子集，它只是对除了 _id 外的任意单一字段建立起正序或者逆序的索引树。  
 
-![Single-Field-Index](Single-Field-Index.jpg-1000width)
+![Single-Field-Index](./img/Single-Field-Index.jpg-1000width)
 
 
 ## 复合索引(Compound)  
@@ -126,7 +126,7 @@ db.users.createIndex( {username: 1, age: 1} )
 
 上面两个索引是完全不同的，在磁盘上的B+树其实也按照了完全不同的顺序进行存储，虽然username字段都是升序排列的，但是对于age来说，两个索引的处理是完全相反的：  
 
-![Compound-Index.jpg-1000width](Compound-Index.jpg-1000width)  
+![Compound-Index.jpg-1000width](./img/Compound-Index.jpg-1000width)  
 
 这也就造成了在使用查询语句对集合中数据进行查找时，如果约定了正逆序，那么其实是会使用不同的索引的，所以在索引创建时一定要考虑好使用的场景，避免创建无用的索引。  
 

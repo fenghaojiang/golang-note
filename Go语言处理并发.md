@@ -6,7 +6,7 @@ date: 2020-10-29
 # 并发的概念
 
 Erlang之父Armstrong用一张很经典的图来描述并发与并行  
-![concurrency](concurrency.jpg)  
+![concurrency](./img/concurrency.jpg)  
 与并发相对的概念并不是并行，而是顺序  
 顺序执行，则必须有先有后，而并发执行，强调的是"同时出发"，无论另一个任务是否完成都可以进行  
 
