@@ -167,6 +167,39 @@ Len: &s => pointer => uintptr => pointer => *int => int
 Cap: &s => pointer => uintptr => pointer => *int => int
 ```
 
+## 获取map长度  
+
+```go
+type hmap struct {
+	count     int
+	flags     uint8
+	B         uint8
+	noverflow uint16
+	hash0     uint32
+
+	buckets    unsafe.Pointer
+	oldbuckets unsafe.Pointer
+	nevacuate  uintptr
+
+	extra 	   *mapextra
+}
+```
+
+和slice不同，makemap函数返回的是hmap的指针，注意是指针:  
+```go
+func makemap(t *maptype, hint int64, h *hmap, bucket unsafe.Pointer) *hmap
+```
+
+我们依然能通过unsafe.Pointer和uintptr进行转换，得到hamp字段的值，只不过，现在count变成二级指针了：  
+
+```go
+func main() {
+	mp := make(map[string]int) 
+	mp["nmsl"] = 100
+	mp["sunxiaochuan"] = 258
+	count := **(**int)(unsafe.Pointer(&mp)) //返回的是指针
+}
+```
 
 
 
