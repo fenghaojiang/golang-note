@@ -115,6 +115,59 @@ Offsetof返回结构体成员在内存中的位置离结构体起始处的字节
 
 Alignof返回m，m是指当类型进行内存对齐时，它分配到的内存地址能整除m  
 
+上述3个函数返回的结构都是uintptr类型，代表着可以和unsafe.Pointer可以相互转换。三个函数都是在编译期间执行，它们的结果可以直接赋值给const型变量。另外，因为三个函数执行的结果和操作系统、编译器相关，所以是不可以移植的。  
+
+综上，unsafe包提供了2点重要的能力:
+
+*1.任何类型的指针和unsafe.Pointer可以相互转换*
+*2.uintptr类型和unsafe.Pointer可以相互转换*
+
+Pointer不能直接进行数学运算，但可以把它转换成uintptr，对uintptr类型进行数学运算，再转换成pointer类型  
+
+uintptr并没有指针的语义，所以uintptr所指的对象会被gc无情地回收。而unsafe.Pointer有指针语义，可以保护它所指向的对象在“有用”的时候不会被垃圾回收。  
+
+
+
+## 如何使用unsafe?  
+
+```go
+// runtime/slice.go
+type slice struct {
+	array unsafe.Pointer //元素指针
+	len int // 长度
+	cap int // 容量
+}
+```
+
+调用make函数新建一个slice，底层调用的是makeslice函数，返回的是slice结构体   
+```go 
+func makeslice(et *_type, len, cap int) slice 
+```
+
+我们可以用过unsafe.Pointer和uintptr进行转换，得到slice的字段值   
+
+demo:  
+
+```go
+func main() {
+	s := make([]int, 9, 20)
+	var Len = *(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&s)) + uintptr(8)))
+	fmt.Println(Len, len(s))
+
+	var Cap = *(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&s)) + uintptr(16)))
+
+	fmt.Println(Cap, cap(s))
+}
+```
+
+Len、Cap的转换过程如下：
+
+```go
+Len: &s => pointer => uintptr => pointer => *int => int
+Cap: &s => pointer => uintptr => pointer => *int => int
+```
+
+
 
 
 
