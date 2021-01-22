@@ -201,6 +201,14 @@ func main() {
 }
 ```
 
+count 转换过程:
+```go
+&mp => pointer => **int => int
+```
+
+
+
+
 
 
 
