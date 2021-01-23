@@ -124,7 +124,18 @@ Alignof返回m，m是指当类型进行内存对齐时，它分配到的内存�
 
 Pointer不能直接进行数学运算，但可以把它转换成uintptr，对uintptr类型进行数学运算，再转换成pointer类型  
 
-uintptr并没有指针的语义，所以uintptr所指的对象会被gc无情地回收。而unsafe.Pointer有指针语义，可以保护它所指向的对象在“有用”的时候不会被垃圾回收。  
+uintptr并没有指针的语义，所以uintptr所指的对象会被gc无情地回收。而unsafe.Pointer有指针语义，可以保护它所指向的对象在“有用”的时候不会被垃圾回收。 
+
+总结一下：  
+
+1. 任何类型的指针都可以被转化成Pointer  
+2. Pointer可以被转化成任何类型的指针  
+3. uintptr可以被转化成Pointer  
+4. Pointer可以被转化成uintptr  
+
+uintptr是golang的内置类型，是能够存储指针的整型  
+
+**一个unsafe.Pointer指针也可以被转化为uintptr类型，然后保存到指针型数值变量中（注：这只是和当前指针相同的一个数字值，并不是一个指针），然后用以做必要的指针数值运算。（uintptr是一个无符号的整型数，足以保存一个地址）这种转换虽然也是可逆的，但是将uintptr转为unsafe.Pointer指针可能会破坏类型系统，因为并不是所有的数字都是有效的内存地址。**
 
 
 
@@ -219,10 +230,136 @@ eg:
 package main
 
 import (
-	
+	"fmt"
+	"unsafe"
 )
+
+type SunxiaochuanNMSL struct {
+	name     string
+	language string
+}
+
+func main() {
+	p := SunxiaochuanNMSL{"SunXiaoChuan", "Chouxianghua"}
+	fmt.Println(p)
+
+	name := (*string)(unsafe.Pointer(&p))
+
+	*name = "daidaidashixiong"
+
+	lang := (*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&p)) + unsafe.Offsetof(p.language)))
+	*lang = "nmsl"
+
+	fmt.Println(p)
+}
 ```
 
+输出:  
+
+```terminal
+{SunXiaoChuan Chouxianghua}
+{daidaidashixiong nmsl}
+```
+
+name是结构体的第一个成员，因此可以直接将&p解析成*string。这一点，在前面获取map的count成员时，用的是同样的原理。   
+
+对于结构体的私有成员，现在有方法可以通过unsafe.Pointer改变它的值了。   
+
+把上面的结构体多加一个字段  
+
+```go
+type SunxiaochuanNMSL struct {
+	name     string
+	age      int
+	language string
+}
+```
+
+并且放在其他包，这样在main函数中，他的三个字段都是私有成员变量，不能直接修改。但可以通过unsafe.Sizeof()获取到成员的大小，进而计算出成员的地址，直接修改内存。   
+
+```go
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+type SunxiaochuanNMSL struct {
+	name     string
+	age      int
+	language string
+}
+
+func main() {
+	p := SunxiaochuanNMSL{"SunXiaoChuan", 257, "Chouxianghua"}
+	fmt.Println(p)
+
+	name := (*string)(unsafe.Pointer(&p))
+	*name = "daidaidashixiong"
+
+	lang := (*string)(unsafe.Pointer(uintptr(unsafe.Pointer(&p)) + 8 + unsafe.Sizeof(string(""))))
+	*lang = "nmsl"
+
+	fmt.Println(p)
+}
+```
+
+## string和slice的相互转换  
+
+接下来的是一个经典经典典中典的例子。实现字符串和bytes切片之间的转换，要求是zero-copy。想一下，一般的做法，都需要遍历字符串或者bytes切片，再挨个赋值。  
+
+首先我们要了解slice和string底层的数据结构：  
+
+```go
+type StringHeader struct {
+	Data uintptr
+	Len  int
+}
+
+type SliceHeader struct {
+	Data uintptr
+	Len  int
+	Cap  int
+}
+```  
+
+上面是反射包下的结构体，我们只需要贡献底层的[]byte数组就可以实现zero-copy  
+
+
+```go
+type StringHeader struct {
+	Data uintptr
+	Len  int
+}
+
+type SliceHeader struct {
+	Data uintptr
+	Len  int
+	Cap  int
+}
+
+func string2bytes(s string) []byte {
+	stringHeader := (*reflect.StringHeader)(unsafe.Pointer(&s))
+	bh := reflect.SliceHeader{
+		Data: stringHeader.Data,
+		Len:  stringHeader.Len,
+		Cap:  stringHeader.Len,
+	}
+	return *(*[]byte)(unsafe.Pointer(&bh))
+}
+
+func bytes2string(b []byte) string {
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+	sh := reflect.StringHeader{
+		Data: sliceHeader.Data,
+		Len:  sliceHeader.Len,
+	}
+	return *(*string)(unsafe.Pointer(&sh))
+}
+```
+
+uintptr可以和unsafe.Pointer进行相互转换，uintptr可以进行数学运算，通过两者结合就解决了Go指针不能进行数学运算的限制
 
 
 
