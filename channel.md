@@ -217,9 +217,97 @@ case2
 case2
 ```
 
-可以看到select在遇到多个<-ch同时满足可读或者可写条件时会随机选择一个case执行其中的代码
+可以看到select在遇到多个<-ch同时满足可读或者可写条件时会随机选择一个case执行其中的代码  
+
+其实是伪随机。如果没有case就会选择default去处理，如果default case存在的话，如果不存在则select会阻塞，知道某个case需要处理  
 
 在上面的代码中，两个case都是同时满足执行条件的，如果我们按照顺序依次判断，那么后面的条件永远都会得不到执行，而随机的引入就是为了避免饥饿问题的发生  
 
 
 
+## Range  
+
+for ... range 语句可以处理Channel  
+
+some examples:  
+```go
+func main() {
+	go func() {
+		time.Sleep(1 * time.Second)
+	}()
+	c := make(chan int)
+	go func() {
+		for i := 0; i < 10; i++ {
+			c <- i
+		}
+		close(c)
+	}()
+
+	for i := range c {
+		fmt.Println("Finished ", i)
+	}
+}
+```
+
+range c 产生的迭代值为Channel中发送的值，它会一直迭代知道channel被关闭。如果把上述的**close(c)**注释掉，程序会发生阻塞  
+
+
+## timeout  
+
+select有很重要的一个应用就是超时处理，如果没有case的话select就会一直阻塞，在应用中肯定不被允许。这时候我们可能就需要一个超时操作用来处理超时的情况。  
+
+如下述例子:  
+
+```go
+func main() {
+	c1 := make(chan string, 1)
+	go func() {
+		for {
+			time.Sleep(time.Second * 2)
+			c1 <- "result1"
+		}
+	}()
+
+	for {
+		select {
+		case res := <-c1:
+			fmt.Println(res)
+		case <-time.After(time.Second * 1):
+			fmt.Println("timeout 1")
+		}
+	}
+}
+```
+
+## Timer和Ticker
+
+接下来看看关于时间的两个Channel。
+timer是一个定时器，代表未来的一个单一事情，你可以告诉timer你要等待多长时间，它提供一个Channel，在将来的那个时间那个Channel提供了一个时间值。下面的例子中第二行会阻塞两秒钟的时间，然后才会执行下面的代码
+
+
+```go
+func main() {
+	timer1 := time.NewTimer(time.Second * 2)
+	<-timer1.C
+	fmt.Println("Timer 1 expired")
+}
+```
+
+当然，还可以使用time.Sleep实现，time.Stop也可以  
+
+而Ticker是一个定时触发的计时器，它会以一个interval往Channel发送一个事件(当前时间)，而Channel的接收者可以以固定的时间间隔从Channel中读取事件。
+
+```go
+func main() {
+	ticker := time.NewTicker(time.Millisecond * 500)
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		for t := range ticker.C {
+			fmt.Println("Tick at", t)
+		}
+		wg.Done()
+	}()
+	wg.Wait()
+}
+```
