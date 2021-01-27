@@ -57,7 +57,7 @@ if r.Form["token"] != token {
     //提示登陆
 }
 sess.Set("token",token)
-```
+```  
 
 **间隔生成新的SID**  
 还有一个解决方案就是，我们给session额外设置一个创建时间的值，一旦过了一定的时间就销毁sessionID重新生成新的session  
