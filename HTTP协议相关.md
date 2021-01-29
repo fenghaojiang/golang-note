@@ -76,22 +76,43 @@ HTTP消息报头包括: 普通报头、请求报头、响应报头、实体报�
 #### 请求报头  
 请求报头允许客户端向服务端传递请求的附加信息以及客户端自身的信息。常见的请求报头包括:  
 
-| 字段名 | 说明 |
+|字段名|说明|
 |---|---|
-|Accept|客户端可处理的媒体类型:Accept: image/gif|  
-|Accept-Charset|客户端可处理的字符集|  
+|Accept|客户端可处理的媒体类型：Accept：image/gif|
+|Accept-Charset|客户端可处理的字符集|
 |Accept-Encoding|客户端的编码方式|
-|Accept-Language|客户端指定的语言类型|  
-|Authrization|web认证信息|  
+|Accept-Langulage|客户端指定的语言类型|
+|Authrization|web认证信息|
 |Expect|期待服务器的特定行为|
-|Host|请求报头域|
+|Host|请求报头域主要用于指定被请求资源的 Internet 主机和端口号|
+|User-Agent|请求报头域允许客户端将它的操作系统、浏览器和其它属性|
+|Referer|请求中的 url 上一跳地址|
 
+#### 响应报头  
 
+响应报头允许服务器传递不能放在状态行中的附加响应信息，以及关于服务器的信息和对Request-URI所标识的资源进行下一步访问的信息。  
 
-#### 请求报头  
-//TODO
+常见的响应报头包括：  
+|字段名|说明|
+|---|---|
+|Age|资源的创建时间|
+|Location|	客户端重定向至指定的URL|
+|Retry-After|再次发送请求的时机|
+|www-Authenticate|服务器对客户端的认证|
 
+#### 实体报头  
+请求和响应消息都可以传送一个实体。一个实体由实体报头域和实体正文组成，但并不是说实体报头域和实体正文要在一起发送，可以只发送实体报头域。实体报头定义了关于实体正文和请求所标识的资源的元信息。  
 
+|字段名|说明|
+|---|---|
+|Allow|资源所支持的HTTP请求类型|
+|Content-Encoding|数据编码方式|
+|Content-Language|数据的语言类型|
+|Content-Length|实体的内容大小|
+|Content-Location|替代对应资源的URI|
+|Content-Type|实体报头域用语指明发送给接收者的实体正文的媒体类型|
+|Expires|数据过期时间|
+|Last-Modified|资源的最后修改时间|
 
 
 + 响应报文
