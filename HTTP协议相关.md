@@ -42,6 +42,19 @@ scheme:opaque[?query][#fragment]
 
 ![request](./img/request.png)  
 
+客户端请求由以下部分
++ 请求行
++ 请求头  
++ 请求体  
+
+### 请求行  
+
+请求行以一个方法符号开头，以空格分开，后面跟着请求的URI和协议的版本，格式如下：  
+
+```shell
+Method Request-URI HTTP-Version CRLF
+```
+
 + 响应报文
 
 ![response](./img/response.png)  
