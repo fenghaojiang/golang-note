@@ -125,7 +125,7 @@ HTTP / 2 中新的二进制框架层解决了 HTTP / 1.x 中出现的行头阻�
 ![control](./img/control.jpg)  
 
 
-
+https://www.cnblogs.com/rickiyang/p/13138574.html  
 
 
 
