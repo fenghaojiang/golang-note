@@ -42,7 +42,7 @@ scheme:opaque[?query][#fragment]
 
 ![request](./img/request.png)  
 
-客户端请求由以下部分
+一个标准的HTTP请求由以下部分
 + 请求行
 + 请求头  
 + 请求体  
@@ -54,6 +54,30 @@ scheme:opaque[?query][#fragment]
 ```shell
 Method Request-URI HTTP-Version CRLF
 ```
+*Method*表示请求方法  
+*Request-URI*是一个统一资源标识符  
+*HTTP-Version*表示请求的HTTP协议版本  
+*CRLF*表示回车和换行(除了作为结尾的CRLF外，不允许出现单独的CR或LF字符)  
+
+### 请求头  
+HTTP消息报头包括: 普通报头、请求报头、响应报头、实体报头，每一个报头域都是由  
+**名字+ : + 空格 + 值**组成，消息报头域的名字是大小写无关的  
+
+#### 普通报头  
+在普通报头中，有少数报头域用于所有的请求和响应消息，但并不用于被传输的实体，只用于传输的消息  
+| 字段名 | 说明 |
+|---|---|
+|Cache-Control|控制缓存行为|
+|Connection|连接的管理|
+|Date|普通报头域表示消息产生的日期和时间|
+|Pragma|http 1.0中的保温指令控制|  
+
+
+#### 请求报头  
+//TODO
+
+
+
 
 + 响应报文
 
