@@ -84,7 +84,7 @@ HTTP消息报头包括: 普通报头、请求报头、响应报头、实体报�
 |Accept-Language|客户端指定的语言类型|  
 |Authrization|web认证信息|  
 |Expect|期待服务器的特定行为|
-|Host|请求报头域
+|Host|请求报头域|
 
 
 
