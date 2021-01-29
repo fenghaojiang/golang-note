@@ -70,7 +70,22 @@ HTTP消息报头包括: 普通报头、请求报头、响应报头、实体报�
 |Cache-Control|控制缓存行为|
 |Connection|连接的管理|
 |Date|普通报头域表示消息产生的日期和时间|
-|Pragma|http 1.0中的保温指令控制|  
+|Pragma|http 1.0中的保温指令控制|
+
+
+#### 请求报头  
+请求报头允许客户端向服务端传递请求的附加信息以及客户端自身的信息。常见的请求报头包括:  
+
+| 字段名 | 说明 |
+|---|---|
+|Accept|客户端可处理的媒体类型:Accept: image/gif|  
+|Accept-Charset|客户端可处理的字符集|  
+|Accept-Encoding|客户端的编码方式|
+|Accept-Language|客户端指定的语言类型|  
+|Authrization|web认证信息|  
+|Expect|期待服务器的特定行为|
+|Host|请求报头域
+
 
 
 #### 请求报头  
