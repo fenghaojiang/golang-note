@@ -311,3 +311,5 @@ ServeHTTP为什么要接受ResponseWriter接口和一个指向Request结构的�
 接受Request结构指针的原因很简单： 为了让服务器能够察觉到处理器对Request结构的修改，我们必须以传引用(pass by reference)而不是传值(pass by value)  
 而ResponseWriter实际上就是response这个非导出结构的接口，ResponseWriter在使用response结构时，传递的也是只想response结构的指针，这也就是说，ResponseWriter是以传引用而不是传值的方式在使用response结构  
 总结，实际上ServeHTTP函数两个参数传递的都是引用而不是值
+
+
