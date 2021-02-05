@@ -36,3 +36,31 @@ func fib(x int) int {
 
 ### channel  
 
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+func main() {
+	c := make(chan int32, 12)
+	a := make([]int32, 12)
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		for v := range c {
+			fmt.Println(v)
+		}
+		wg.Done()
+	}()
+	for i := 0; i < len(a); i++ {
+		a[i] = int32(i + 1)
+		c <- a[i]
+	}
+	close(c)
+	wg.Wait()
+}
+```
