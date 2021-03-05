@@ -14,6 +14,22 @@ Go中经常被人提及的设计模式就是：不要通过共享内存的方式
 
 两个独立运行的goroutine可以向Channel中发送数据，另一个会从channel中接受数据，能通过Channel间接完成通信  
 
+如果说goroutine是Go语言程序的并发体的话，那么channels则是它们之间的通信机制。一个channel是一个通信机制，他可以让一个goroutine通过它给另一个goroutine发送值信息。每个channel都有一个特殊的类型，也就是channels可发送数据的类型。  
+
+与map类似，channel也对应一个make创建的底层数据结构的引用。当我们复制一个channel或者用于函数参数传递时，我们只是拷贝了一个channel的引用，因此调用者和被调用者将引用同一个channel对象。和其它引用类型一样，channel的零值也是nil  
+
+
+两个相同的类型的channel可以使用==运算符比较。如果两个channel引用的是相同的对象，那么比较的结果为真。一个channel也可以和nil进行比较。  
+
+一个channel有发送和接受两个主要操作，都是通信的行为。一个发送语句将一个值从一个goroutine通过channel发送到另一个执行接收操作的goroutine。发送和接收两个操作符都使用<-运算符。在发送语句中，<-运算符分割channel和要发送的值，在接收语句中，<-运算符写在channel对象之前。一个不适用接收结果的接收操作也是合法的。
+
+
+```go
+ch <- x   // a send statement
+x = <- ch // a receive expression in an assignment statement
+<-ch      // a receive statement; result is discarded
+```
+
 ## FIFO  
 
 目前的Channel收发操作都遵守了先进先出的设计，具体规则如下：  
