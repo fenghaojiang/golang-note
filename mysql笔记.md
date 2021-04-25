@@ -13,7 +13,7 @@ date: 2021-04-18
 Master Thread负责将缓冲池中的数据异步刷新的磁盘，保证数据的一致性，脏页的刷新、合并插入缓冲(Insert Buffer)、Undo页的回收
 
 2. IO Thread  
-负责IO请求的回调
+负责IO请求的回调(Async IO)
 
 3. Purge Thread
 事务被提交后，其所使用的undolog可能不再需要，因此需要PurgeThread来回收已经使用并分配的undo页
@@ -36,16 +36,20 @@ Sharp checkpoint---数据库关闭时将所有脏页都刷新回磁盘，但是�
 
 可能发生Fuzzy Checkpoint的情况:  
 + Master Thread Checkpoint  
-异步进行，差不多每秒或者每10秒的速度从缓冲池的脏页列表中刷新一定比例的页回磁盘。  
+异步进行，差不多每秒或者每10秒的速度从缓冲池的脏页列表中刷新一定比例的页回磁盘，用户查询线程不会阻塞  
 
 + FLUSH_LRU_LIST Checkpoint  
-
+InnoDB存储引擎需要保证LRU列表中需要差不多100个空闲页可供使用。如果没有，InnoDB会将LRU列表尾端的页移除。如果这些页有脏页，那么需要进行Checkpoint
 
 + Async/Sync Flush Checkpoint  
-
+重做日志不可用的情况，这时需要强制将一些页刷新回磁盘，此时脏页是从脏页列表中选取的。
 
 + Dirty Page too much Checkpoint  
+脏页数目太多，导致InnoDB强制进行Checkpoint。总的来说还是为了保证缓冲池有足够可用的页。
 
+
+### Master Thread
+Master Thread具有最高的线程优先级别。由主循环Loop、后台循环backgroup loop、刷新循环flush loop、暂停循环suspend loop
 
 
 
