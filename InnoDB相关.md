@@ -1,8 +1,9 @@
 ---
-title: MySQL笔记
+title: InnoDB相关
 date: 2021-04-18 
 ---
 
+## InnoDB相关
 
 事务数据库系统普遍采用了Write Ahead Log策略，当事务提交时，先写重做日志，再修改页。当由于发生宕机而导致数据丢失时，通过重做日志来完成数据的恢复。这也是事务ACID中的D(Durability)
 
