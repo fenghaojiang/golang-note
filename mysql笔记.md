@@ -51,6 +51,17 @@ InnoDB存储引擎需要保证LRU列表中需要差不多100个空闲页可供�
 ### Master Thread
 Master Thread具有最高的线程优先级别。由主循环Loop、后台循环backgroup loop、刷新循环flush loop、暂停循环suspend loop
 
+### InnoDB关键特性
++ 插入缓冲
+  插入缓冲不是缓冲池中的一个部分。
++ 两次写
++ 自适应哈希索引
++ 异步IO
++ 刷新邻接页
+
+
+
+
 
 
 
