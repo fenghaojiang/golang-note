@@ -145,6 +145,68 @@ func (m *Map) dirtyLocked() {
 }
 ```
 
+### read map和dirty map是什么时间删除的?  
+
++ 当read map中存在某个key时候，这个时候只会删除read map，并不会删除dirty map(因为dirty map不存在这个值)  
++ 当read map中不存在，才会去删除dirty map里面的值  
+
+疑问：如果按照这个删除方式，那岂不是 dirty map 中会有残余的 key，导致没删除掉？
+
+答：其实并不会。当 misses 数量大于等于 dirty map 的元素个数时，会整体复制 read map 到 dirty map。这个过程中还附带了另外一个操作：将 dirty map 置为 nil。  
+
+
+```go
+func (m *Map) missLocked() {
+    m.misses++
+    if m.misses < len(m.dirty) {
+        return 
+    }
+    m.read.Store(readOnly{m: m.dirty})
+    m.dirty = nil
+    m.misses = 0
+}
+```
+
+### read map 与 dirty map 的关系 ？  
+
++ 在 read map 中存在的值，在 dirty map 中可能不存在。
++ 在 dirty map 中存在的值，在 read map 中也可能存在。
++ 当访问多次，发现 dirty map 中存在，read map  中不存在，导致 misses 数量大于等于 dirty map 的元素个数时，会整体复制 dirty map 到 read map。
++ 当出现 dirty map 向 read map 复制后，dirty map 会被置成 nil。
++ 当出现 dirty map 向 read map 复制后，readOnly.amended 等于了 false。当新插入了一个值时，会将 read map 中的值，重新给 dirty map 赋值一遍
+
+### read/dirty map 中的值一定是有效的吗？  
+
++ nil: 如果获取的value是nil，那说明这个key是已经删除过的。既不在read map，也不在dirty map
++ expunged: 这个key在dirty map中是不存在的
++ valid: 存在于两者其中一个  
+
+### sync.Map 是如何提高性能的？  
+
+通过源码解析，我们知道sync.Map里面有两个普通的map, read map主要是负责读，dirty map是负责读和写(加锁)。在读多写少的场景下，read map的值基本不发生变化，可以让read map做到无锁操作，就减少了使用Mutex+Map必须加锁/解锁的环节，因此也就提高了性能。  
+
+不过也能够看出来，read map 也是会发生变化的，如果某些 key 写操作特别频繁的话，sync.Map 基本也就退化成了 Mutex + Map（有可能性能还不如 Mutex + Map）。
+
+所以，不是说使用了 sync.Map 就一定能提高程序性能，我们日常使用中尽量注意拆分粒度来使用 sync.Map。
+
+关于如何分析 sync.Map 是否优化了程序性能，同样可以使用 pprof。具体过程可以参考 《这可能是最容易理解的 Go Mutex 源码剖析》  
+
+
+### 应用场景  
+
+1. 读多写少  
+2. 写操作也多，但是修改的key和读取的key特别不重合。  
+
+关于第二点我觉得挺扯的，毕竟我们很难把控这一点，不过由于是官方的注释还是放在这里。
+
+实际开发中我们要注意使用场景和擅用 pprof 来分析程序性能。  
+
+
+### sync.Map 使用注意点  
+
+和 Mutex 一样， sync.Map 也同样不能被复制，因为 atomic.Value 是不能被复制的。  
+
+
 
 
 
