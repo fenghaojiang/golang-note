@@ -69,4 +69,19 @@ date: 2021-4-5
 |ENTRYPOINT|与CMD功能相同，但docker run不会覆盖，如果需要覆盖可以增加参数 -entrypoint来覆盖|
 |VOLUME|数据卷，将宿主机的目录映射到容器内的目录|
 
+### 常见命令  
+
+从仓库上拉取最新镜像
+```shell
+docker pull [IMAGE:tag]
+```
+
+搜索远端仓库中共享的镜像，支持的参数有：  
++ --automated=false 仅显示自动创建的镜像  
++ --no-trunc=false  输出信息不截断显示  
++ -s, --stars=0指定仅显示评价为指定星级以上的镜像
+
+```shell
+docker search [IMAGE]
+```
 
