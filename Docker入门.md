@@ -85,3 +85,14 @@ docker pull [IMAGE:tag]
 docker search [IMAGE]
 ```
 
+```shell script
+docker images 
+# 
+docker ps 
+# 
+docker inspect 
+```
+
+在启动容器时，可以通过-P或者-p来指定端口映射, 使用-P时Docker会随机映射一个49000~49900的端口至容器内部开放的网络端口   
+
+
