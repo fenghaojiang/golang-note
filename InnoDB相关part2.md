@@ -65,3 +65,9 @@ Compressed行记录故事的另一个功能就是，存储在其中的行数据�
 在多字节字符集情况下，CHAR和VARCHAR实际行存储基本是没有区别的。  
 
 
+### 约束 
+InnoDB提供了以下几种约束
++ Primary Key
++ Unique Key
++ Foreign Key
++ Default
