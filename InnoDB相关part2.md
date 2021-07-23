@@ -71,3 +71,17 @@ InnoDB提供了以下几种约束
 + Unique Key
 + Foreign Key
 + Default
+
+
+### 约束的创建可以采用以下两种方式  
++ 表建立时就进行约束定义
++ 利用ALTER TABLE命令来进行创建约束 
+
+```sql
+ALTER TABLE u 
+ADD UNIQUE KEY uk_id_card (id_card);
+``` 
+
+
+
+
