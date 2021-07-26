@@ -69,4 +69,47 @@ DELIMITER $$
 
 
 
+```sql
+CREATE TABLE parent (
+    id INT NOT NULL,
+    PRIMARY KEY (id)
+)ENGINE=INNODB;
+
+CREATE TABLE child (
+    id INT, parent_id INT,
+    FOREIGN KEY (parent_id) REFERENCES parent(id)
+) ENGINE=INNODB;
+``` 
+
+被引用的是父表，引用的是子表， 外键定义时的ON DELETE和ON UPDATE表示在对父表进行DELETE和UPDATE操作时，对子表所做的操作，可定义的子表操作有：  
+
+
++ CASCADE
++ SET NULL
++ NO ACTION
++ RESTRICT
+
+而InnoDB存储引擎会在外键建立时会自动对该列加一个索引
+
+
+```sql
+SHOW CREATE TABLE child\G;
+```
+
+
+```sql
+CREATE TABLE `child` (
+  `id` int DEFAULT NULL,
+  `parent_id` int DEFAULT NULL,
+  KEY `parent_id` (`parent_id`),
+  CONSTRAINT `child_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `parent` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```  
+
+
+
+
+
+
+
 
