@@ -43,14 +43,6 @@ PARTITION BY HASH (YEAR(b))
 PARTITIONS 4;
 ```
 
-
-
-
-  
-
-
-
-
 + KEY分区: 根据MySQL数据库提供的哈希函数来进行分区  
 
 
@@ -69,3 +61,4 @@ PARTITIONS 4;
 ERROR 1503 (HY000): A PRIMARY KEY must include all columns in the table's partitioning function (prefixed columns are not considered).
 ``` 
 
+MySQL数据库还支持一中称为LINEAR HASH的分区,它使用一个更加复杂的算法来确定新行插入到已经分区的表中的位置. 它的语法和HASH分区的语法相似,只是将关键字HASH改为LINEAR HASH.  
