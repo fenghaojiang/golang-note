@@ -62,3 +62,5 @@ ERROR 1503 (HY000): A PRIMARY KEY must include all columns in the table's partit
 ``` 
 
 MySQL数据库还支持一中称为LINEAR HASH的分区,它使用一个更加复杂的算法来确定新行插入到已经分区的表中的位置. 它的语法和HASH分区的语法相似,只是将关键字HASH改为LINEAR HASH.  
+
+LINEAR HASH分区的优点在于,增加/删除/合并和拆分分区变得更加快捷,这有利于处理含有大量数据的表.它的缺点在于,与使用HASH分区得到的数据分布相比,各个分区间数据的分布可能不大均衡.  
