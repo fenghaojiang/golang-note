@@ -78,3 +78,18 @@ LINEAR HASH分区的优点在于,增加/删除/合并和拆分分区变得更加
   在前面介绍RANGE、LIST、HASH和KEY这四种分区中，分区的条件是：数据必须是整型(interger)，如果不是整型，需要通过函数将其转化成整型。COLUMNS分区可以用非整型的数据进行分区，分区根据类型直接比较而得到，不需要转化成整型。  
 
    
+在LIST分区下要使用NULL值，则必须显式地之处哪个分区中放入NULL值，否则会报错。  
+
+
+```sql
+CREATE TABLE t_list (
+    a INT, 
+    b INT
+)ENGINE=INNODB 
+PARTITION BY LIST(b) (
+    PARTITION p0 VALUES IN (1,3,5,7,9,NULL),
+    PARTITION p1 VALUES IN (0,2,4,6,8)
+);
+```  
+
+
