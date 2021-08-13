@@ -29,5 +29,21 @@ date: 2021-08-09
 
 如果在一棵高度为3的辅助索引树中查找数据，那需要对这棵辅助索引树遍历3次找到指定主键，如果聚集索引树的高度同样为3，那么还需要对聚集索引树进行3次查找，最终找到一个完整的行数据所在的页，因此一共需要6次逻辑IO访问以得到最终的一个数据页。  
 
+### B+树索引的管理  
+
+1. 索引管理  
+   ALTER TABLE tbl_name | ADD {INDEX|KEY} [index_name] [index_type] (index_col_name,...) [index_option] ...
+
+   ALTER TABLE tbl_name DROP RRIMARY KEY | DROP {INDEX|KEY} index_name
+
+   ```sql
+   ALTER TABLE t ADD KEY idx_b (b(100));
+   ```
+
+   查看
+
+   ```sql
+   SHOW INDEX FROM t\G;
+   ```
 
 
