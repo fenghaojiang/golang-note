@@ -46,4 +46,20 @@ date: 2021-08-09
    SHOW INDEX FROM t\G;
    ```
 
+使用USE INDEX的索引提示可以来使用a这个索引，如： 
+
+```sql
+SELECT * FROM t USE INDEX(a) WHERE a = 1 and b = 2;
+```
+
+虽然指定使用a索引，但是优化器实际选择的是通过表扫描的方式。因此，USE INDEX只是告诉优化器可以选择该索引，实际上优化器还是会再根据自己判断进行选择。  
+
+
+如果使用FORCE INDEX索引提示，优化器最终选择的和用户指定的索引是一致的。  
+
+
+```sql
+SELECT * FROM t FORCE INDEX(a) WHERE a = 1 AND b = 2;
+```
+
 
