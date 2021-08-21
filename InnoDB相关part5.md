@@ -74,6 +74,18 @@ m的取值为略大于2倍的缓冲池页数量的质数。
 + inverted file index 仅存储文档ID
 + full inverted index 存储的是对(pair),还存储了单词所在的位置信息，占用更多空间，但是能更好的定位数据。  
 
+### InnoDB全文索引  
 
+InnoDB从1.2版本开始采用full inverted index方式。在InnoDB存储引擎中，将(DocumentID, Position)视为一个“ilist”. 因此在全文检索的表中，有两个列，一个是word，另一个是ilist。  
+
+
+由于在ilist字段中存放了Position，所以可以进行Proximity Search  
+
+
+倒排索引需要将word存放到一张表中，这个表称为Auxiliary Table(辅助表)。在InnoDB存储引擎中，为了提高全文检索的并行性能，共有6张Axillary Table 根据word的Latin编码进行分区。  
+
+Auxiliary Table是存在磁盘上的持久的表。  
+
+FTS Index Cache(全文检索索引缓存)(底层是红黑树)，其用来提高全文检索的性能。   
 
 
