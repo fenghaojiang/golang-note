@@ -117,3 +117,29 @@ MATCH函数根据相关性进行降序，依据是:
 + 多少个文档包含该word
 
 
+
+
+MySQL数据库允许使用IN BOOLEAN MODE修饰符来进行全文检索。当使用该修饰符时，查询字符串的前后字符会有特殊的含义，例如下面的语句要求查询有Pease 但没有hot的文档，  
+
++和-分别表示这个单词必须出现或者一定不存在  
+
+
+```sql
+Select * from fts_a where match(body) AGAINST ('+Pease -hot' IN BOOLEAN MODE) \G;
+```  
+
+
+Boolean 全文检索支持一下几种操作符  
+
++ 表示该word必须存在
++ 表示该word必须被排除
++ (no operator) 表示该word是可选的，但是如果出现，其相关性会更高
++ @distance表示查询的多个单词之间是否在distance之内，distance的单位是字节。这种全文检索的查询也称为Proximity Search。如：MATCH (body) AGAINST ('"Pease pot"@30 IN BOOLEAN MODE') 表示字符串Pease和Pot之间的距离在30字节内。  
++ \>表示出现该单词时增加相关性
++ <表示出现该单词时降低相关性
++ ~表示允许出现该单词，但是出现时相关性为负(全文检索查询允许负相关性)  
++ *表示以该单词开头的单词, 如lik\*   
++ "表示短语  
+
+
+
