@@ -89,3 +89,31 @@ Auxiliary Table是存在磁盘上的持久的表。
 FTS Index Cache(全文检索索引缓存)(底层是红黑树)，其用来提高全文检索的性能。   
 
 
+对于删除操作，在事务提交时，不删除磁盘Auxiliary Table中的记录，只是删除FTS Cache Index中的记录，对于Auxiliary Table中被删除的记录，InnoDB存储引擎会记录其FTS Document ID，并将其保存在DELETED auxiliary table中。  
+
+
+文档中的分词插入操作是在事务提交时完成，对于删除操作，其在事务提交时，不删除磁盘Auxiliary Table中被删除的记录，InnoDB存储引擎会记录其FTS Document ID，并将其保存在DELETED auxiliary table中。  
+
+DML操作并不删除索引中的数据，相反还会在对应的DELETED表中插入记录，随着应用程序的允许，索引会变得非常大。  
+
+
+InnoDB存储引擎提供了一种方式，允许用户手动地将已删除的记录从索引中彻底删除，该命令就是OPTIMIZE TABLE。   
+
+
+InnoDB存储引擎的全文检索还存在以下限制： 
++ 每张表只能由一个全文检索的索引
++ 由多列组合而成的全文检索索引列必须使用相同的字符集与排序规则。  
++ 不支持没有单词界定符(delimiter)的语言，如中文、日语、韩语等。  
+
+
+```sql
+SELECT * FROM fts_a WHERE MATCH (body) AGAINST ('Porridge');
+```  
+
+MATCH函数根据相关性进行降序，依据是:  
++ word是否在文档中出现
++ word在文档中出现的次数
++ word在索引列中的数量
++ 多少个文档包含该word
+
+
