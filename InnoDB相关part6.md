@@ -14,4 +14,10 @@ InnoDB存储引擎实现了如下两种标准的行级锁:
 
 此外，InnoDB存储引擎支持多粒度(Intention Lock)上进行锁定，这种锁定允许事务在行级上的锁和表级上的锁同时存在。  
 
+### 解决Phantom Problem  
+
+在默认的事务隔离级别下，即REPEATABLE READ下, InnoDB存储引擎采用Next-Key Locking机制避免Phantom Problem。这点可能不同与其他的数据库  
+
+Phantom Problem是指在同一事务下，连续执行两次同样的sql语句可能导致不同的结果，第二次的SQL语句可能会返回之前不存在的行。  
+
 
