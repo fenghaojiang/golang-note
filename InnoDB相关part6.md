@@ -21,3 +21,20 @@ InnoDB存储引擎实现了如下两种标准的行级锁:
 Phantom Problem是指在同一事务下，连续执行两次同样的sql语句可能导致不同的结果，第二次的SQL语句可能会返回之前不存在的行。  
 
 
+
+*在InnoDB存储引擎中，自增长值的列必须是索引，同时必须是索引的第一个列。如果不是第一个列，则MySQL会抛出异常*  
+
+
+```sql
+CREATE TABLE t3 (
+    a INT AUTO_INCREMENT,
+    b INT,
+    KEY(b, a)
+) ENGINE=InnoDB;
+
+
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+```  
+
+
+
