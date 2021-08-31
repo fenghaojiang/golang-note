@@ -19,6 +19,9 @@ InnoDB存储引擎当中的事务完全符合ACID的特性。
 COMMIT
 ```sql
 START TRANSACTION;
+
+
+
 DELETE FROM ......
 COMMIT;
 ```
