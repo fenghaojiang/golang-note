@@ -84,5 +84,13 @@ InnoDB并不会回滚大部分错误异常，但是死锁除外。
 delete和update操作可能并不直接删除原有的数据。purge用于最终完成delete和update操作，这样设计是因为InnoDB存储引擎支持MVCC，所以记录不能在事务提交时立即进行处理。这时其他事务可能正在引用这行，故InnoDB存储引擎需要保存记录之前的版本。   
 
 
+### 隔离等级   
+
++ Read UnCommitted
++ Read Committed
++ Repeatable Read
++ Serializable
+
+
 
 
