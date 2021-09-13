@@ -89,7 +89,10 @@ delete和update操作可能并不直接删除原有的数据。purge用于最终
 + Read UnCommitted
 + Read Committed
 + Repeatable Read
-+ Serializable
++ Serializable  
+
+
+
 
 
 
