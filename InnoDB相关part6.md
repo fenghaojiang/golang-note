@@ -93,6 +93,9 @@ delete和update操作可能并不直接删除原有的数据。purge用于最终
 
 
 
+*Truncate table*语句是DDL，因此虽然和对整张表执行delete但是并不可以被回滚的   
+
+
 
 
 
