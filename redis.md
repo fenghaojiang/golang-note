@@ -71,6 +71,7 @@ typedef struct list {
 
 ### 字典  
 
+哈希表数据结构
 ```cpp
 typedef struct dictht {
     //哈希表数组
@@ -86,7 +87,42 @@ typedef struct dictht {
 }dictht;
 ```
 
-table --- 哈希表   
+哈希表节点
+```cpp
+typedef struct dictEntry {
+    //键
+    void *key;
+
+    //值
+    union {
+        void *val;
+        uint64_tu64;
+        int64_ts64;
+    } v;
+
+    //指向下个哈希表节点，形成链表
+    struct dictEntry *next;
+}dictEntry;
+```
+
+### 字典  
+
+```cpp
+typedef struct dict {
+    // 类型特定函数
+    dictType *type;
+    // 私有数据
+    void *privdata;
+    // 哈希表
+    dictht ht[2];
+    // rehash索引
+    in trehashidx;
+}dict;
+```
+
+
+
+
 
 
 
