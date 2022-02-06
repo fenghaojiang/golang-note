@@ -14,6 +14,8 @@ Golang入门教程:  https://github.com/astaxie/build-web-application-with-golan
 Golang 企业级入门基础知识 https://draveness.me/golang/  
 其实不仅仅这个人的golang知识写得很不错, 其他内容也很值得大家去学习.  https://draveness.me/
 
-k8s 哥中之哥: https://draveness.me/
+: https://draveness.me/
 
-框架相关: https://geektutu.com/post/geerpc-day2.html
+框架相关: https://geektutu.com/post/geerpc-day2.html   
+
+如何分配大内存： https://github.com/golang/go/issues/23199
