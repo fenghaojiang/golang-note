@@ -5,7 +5,7 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
-func GMin[T constraints.Ordered] (x, y T) T {
+func GMin [T constraints.Ordered] (x, y T) T {
 	if x < y {
 		return x
 	}
@@ -33,5 +33,37 @@ func main() {
 	var point Point = Point{1,3,4,5,56}
 	fmt.Println(m)
 
-	fmt.Println(Scale[Point](point, 1))
+	fmt.Println(Scale[Point](point, 2))
+	engineer := Engineer{Salary: 10}
+	manager := Manager{Salary: 100}
+	getSalary(engineer)
+	getSalary(manager)
 }
+
+
+
+type Employee interface {
+	PrintSalary()
+}
+
+func getSalary[E Employee] (e E) {
+	e.PrintSalary()
+}
+
+
+type Engineer struct {
+	Salary int32
+}
+
+func (e Engineer) PrintSalary() {
+	fmt.Println(e.Salary)
+}
+
+type Manager struct {
+	Salary int64
+}
+
+func (m Manager) PrintSalary() {
+	fmt.Println(m.Salary)
+}
+
