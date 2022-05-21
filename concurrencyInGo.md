@@ -64,7 +64,7 @@ func main() {
 ```
 
 
-link: https://geektutu.com/post/hpg-sync-cond.html  
+link: https://geektutu.com/post/hpg-sync-cond.html  //写法有待加强
 
 
 
