@@ -3,69 +3,22 @@ title: Concurrency In Go
 date: 2022-5-21
 ---  
 
-```go
-func main() {
-	cadence := sync.NewCond(&sync.Mutex{})
-	go func() {
-		for range time.Tick(1 * time.Millisecond) {
-			cadence.Broadcast()
-		}
-	}()
-
-	takeStep := func() {
-		cadence.L.Lock()
-		cadence.Wait()
-		cadence.L.Unlock()
-	}
-
-	tryDir := func(dirName string, dir *int32, out *bytes.Buffer) bool {
-		fmt.Fprintf(out, " %v", dirName)
-		atomic.AddInt32(dir, 1)
-		takeStep()
-		if atomic.LoadInt32(dir) == 1 {
-			fmt.Fprintf(out, ". Success!")
-			return true
-		}
-		takeStep()
-		atomic.AddInt32(dir, -1)
-		return false
-	}
-	var left, right int32
-	tryLeft := func(out *bytes.Buffer) bool {
-		return tryDir("left", &left, out)
-	}
-	tryRight := func(out *bytes.Buffer) bool {
-		return tryDir("right", &right, out)
-	}
-
-	walk := func(walking *sync.WaitGroup, name string) {
-		var out bytes.Buffer
-		defer func() {
-			fmt.Println(out.String())
-		}()
-
-		defer walking.Done()
-		fmt.Fprintf(&out, "%v is trying to scoot", name)
-		for i := 0; i < 5; i++ {
-			if tryLeft(&out) || tryRight(&out) {
-				return
-			}
-		}
-		fmt.Fprintf(&out, "\n%v tosses her hands up in exasperation!", name)
-	}
-
-	var peooleInHallway sync.WaitGroup
-	peooleInHallway.Add(2)
-	go walk(&peooleInHallway, "Alice")
-	go walk(&peooleInHallway, "Barbara")
-	peooleInHallway.Wait()
-
-}
-```
 
 
 link: https://geektutu.com/post/hpg-sync-cond.html  //写法有待加强
 
+代码在demo目录  
+
+## sync.Cond  
+
+Signal 提供同志goroutine阻塞调用Wait，另一种叫Broadcast，运行时内部维护一个FIFO列表，等待接受信号。
+Signal发现等待最长时间的goroutine并通知它，而Broadcast向所有的goroutine发送信号。  
+Broadcast提供了一种同时与多个goroutine通信的方法。  
+
+## sync.Pool
+
+用Pool来尽可能快递将预先分配的对象缓存加载启动。  
+在这种情况下，我们不是试图通过限制创建的对象的数量来节省主机的内存，而是通过提前加载获取饮用道另一个对象所需的时间。  
 
 
 
