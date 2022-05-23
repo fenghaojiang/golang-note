@@ -21,4 +21,10 @@ Broadcast提供了一种同时与多个goroutine通信的方法。
 在这种情况下，我们不是试图通过限制创建的对象的数量来节省主机的内存，而是通过提前加载获取饮用道另一个对象所需的时间。  
 
 
+## Channel  
+
+Closing a channel is also one of the ways you can signal multiple goroutines simultaneously  
+
+Closing a channel is both cheaper and faster than performing `n` write  
+
 
