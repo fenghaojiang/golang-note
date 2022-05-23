@@ -1,6 +1,6 @@
 package main
 
-import "runtime"
+import "fmt"
 
 func send() {
 	var c chan struct{}
@@ -18,8 +18,29 @@ func cl() {
 }
 
 func main() {
-	runtime.GOMAXPROCS(runtime.NumCPU())
+	// runtime.GOMAXPROCS(runtime.NumCPU())
 	//send()
 	//receive()
-	cl()
+	// cl()
+	changeOwner := func() <-chan int {
+		results := make(chan int, 5)
+		go func() {
+			defer close(results)
+			for i := 0; i <= 5; i++ {
+				results <- i
+			}
+		}()
+		return results
+	}
+
+	consumer := func(results <-chan int) {
+		for result := range results {
+			fmt.Printf("received: %d\n", result)
+		}
+		fmt.Println("done")
+	}
+
+	results := changeOwner()
+	consumer(results)
+
 }
