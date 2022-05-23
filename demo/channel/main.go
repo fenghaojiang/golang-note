@@ -1,5 +1,7 @@
 package main
 
+import "runtime"
+
 func send() {
 	var c chan struct{}
 	c <- struct{}{}
@@ -16,6 +18,7 @@ func cl() {
 }
 
 func main() {
+	runtime.GOMAXPROCS(runtime.NumCPU())
 	//send()
 	//receive()
 	cl()
